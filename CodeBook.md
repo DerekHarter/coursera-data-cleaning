@@ -52,12 +52,12 @@ the tidy data set given here for analysis.
 # Variables
 
 1. Name: subject
-- Type: Factor, Ordinal
-- Description: Subject id, an integer variable ranging from 1 to 30
+   - Type: Factor, Ordinal
+   - Description: Subject id, an integer variable ranging from 1 to 30
 2. Name: activity
-- Type: Factor, Categorical
-- Description: The 6 activity categories, WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING,
-  STANDING, LAYING
+   - Type: Factor, Categorical
+   - Description: The 6 activity categories, WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING,
+     STANDING, LAYING
 3. (columns 3-68) Names: "tBodyAcc.mean.X", "tBodyAcc.mean.Y",
    "tBodyAcc.mean.Z", "tBodyAcc.std.X", "tBodyAcc.std.Y",
    "tBodyAcc.std.Z", "tGravityAcc.mean.X", "tGravityAcc.mean.Y",
@@ -82,12 +82,12 @@ the tidy data set given here for analysis.
    "fBodyBodyAccJerkMag.mean", "fBodyBodyAccJerkMag.std",
    "fBodyBodyGyroMag.mean", "fBodyBodyGyroMag.std",
    "fBodyBodyGyroJerkMag.mean", "fBodyBodyGyroJerkMag.std"
-- Type: Continuous
-- Description: These values will be the mean value of each measure for
-  all original observations in the raw data that were for a given
-  subject/activity group combination.  Thus these represent the mean
-  of a group of means or of a group of standard deviations from the
-  original set of observations.
+   - Type: Continuous
+   - Description: These values will be the mean value of each measure for
+     all original observations in the raw data that were for a given
+     subject/activity group combination.  Thus these represent the mean
+     of a group of means or of a group of standard deviations from the
+     original set of observations.
 
 # Instructions (To Reproduce Analysis)
 

@@ -54,12 +54,10 @@ the tidy data set given here for analysis.
 1. Name: subject
 - Type: Factor, Ordinal
 - Description: Subject id, an integer variable ranging from 1 to 30
-
 2. Name: activity
 - Type: Factor, Categorical
 - Description: The 6 activity categories, WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING,
   STANDING, LAYING
-
 3. (columns 3-68) Names: "tBodyAcc.mean.X", "tBodyAcc.mean.Y",
    "tBodyAcc.mean.Z", "tBodyAcc.std.X", "tBodyAcc.std.Y",
    "tBodyAcc.std.Z", "tGravityAcc.mean.X", "tGravityAcc.mean.Y",

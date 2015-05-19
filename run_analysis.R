@@ -90,4 +90,6 @@ write.table(merged.df, 'ucihar-tidy-subject-activity-measures.txt', row.names=FA
 tidy.df <- aggregate(x = merged.df[,3:68], 
                      by = list(merged.df$subject, merged.df$activity), 
                      FUN = mean)
+names(tidy.df)[1] <- 'subject'
+names(tidy.df)[2] <- 'activity' 
 write.table(tidy.df, 'ucihar-tidy-subject-activity-means.txt', row.names=FALSE)

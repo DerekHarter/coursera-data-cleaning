@@ -74,7 +74,7 @@ rawDataDir <- 'UCI HAR Dataset'
 test.df <- extract.dataset(rawDataDir, 'test')
 train.df <- extract.dataset(rawDataDir, 'train')
 
-# perform step 1, merte the training and test sets to create one data set
+# perform step 1, merge the training and test sets to create one data set
 merged.df <- rbind(test.df, train.df)
 
 # not asked for in project, but we write this first tidy data set of the
@@ -82,5 +82,12 @@ merged.df <- rbind(test.df, train.df)
 # a txt file
 write.table(merged.df, 'ucihar-tidy-subject-activity-measures.txt', row.names=FALSE)
 
-# write tidy data to file
-#write.table(test.df, 'test-dataframe.txt', row.names=FALSE)
+# perform step 5, create a second, independent tidy data set with the
+# averages of each variable for each activity and each subject.
+# I assume we should end up with 6 lines for each subject, with have the
+# average of all observations for each of our 66 variables for the
+# subject/activity combinations.
+tidy.df <- aggregate(x = merged.df[,3:68], 
+                     by = list(merged.df$subject, merged.df$activity), 
+                     FUN = mean)
+write.table(tidy.df, 'ucihar-tidy-subject-activity-means.txt', row.names=FALSE)

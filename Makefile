@@ -1,7 +1,9 @@
 DATA_ARCHIVE=getdata-projectfiles-UCIHARDataset.zip
 
-all:
-	echo "All"
+all: run_analysis
+
+run_analysis:
+	echo "run_analysis"
 
 get_data: 
 	./get_data.R

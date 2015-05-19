@@ -11,3 +11,7 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+
+# raw data files in project, not to be added to repo
+UCI\ HAR\ Dataset
+*.zip

@@ -1,6 +1,6 @@
 #!/usr/bin/Rscript
 ## Author: Derek Harter
-## Date  : April 17, 2015
+## Date  : May 19, 2015
 ## Assig : Data Science, Getting and Cleaning Data: Course Project
 ##
 ## Desc  : This script simply obtains the required data set for the course

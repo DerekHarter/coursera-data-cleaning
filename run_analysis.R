@@ -74,5 +74,13 @@ rawDataDir <- 'UCI HAR Dataset'
 test.df <- extract.dataset(rawDataDir, 'test')
 train.df <- extract.dataset(rawDataDir, 'train')
 
+# perform step 1, merte the training and test sets to create one data set
+merged.df <- rbind(test.df, train.df)
+
+# not asked for in project, but we write this first tidy data set of the
+# merged test/train data with subject, activity and mean/std measures to
+# a txt file
+write.table(merged.df, 'ucihar-tidy-subject-activity-measures.txt', row.names=FALSE)
+
 # write tidy data to file
 #write.table(test.df, 'test-dataframe.txt', row.names=FALSE)

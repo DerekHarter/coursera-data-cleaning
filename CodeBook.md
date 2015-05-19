@@ -1,40 +1,19 @@
 # Study Design
 
 The original raw data set contained features selected for this
-database come from the accelerometer and gyroscope 3-axial raw signals
-tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to
-denote time) were captured at a constant rate of 50 Hz. Then they were
-filtered using a median filter and a 3rd order low pass Butterworth
-filter with a corner frequency of 20 Hz to remove noise. Similarly,
-the acceleration signal was then separated into body and gravity
-acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another
-low pass Butterworth filter with a corner frequency of 0.3 Hz.
-
-Subsequently, the body linear acceleration and angular velocity were
-derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and
-tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional
-signals were calculated using the Euclidean norm (tBodyAccMag,
-tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag).
-
-Finally a Fast Fourier Transform (FFT) was applied to some of these
-signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ,
-fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to
-indicate frequency domain signals).
-
-These signals were used to estimate variables of the feature vector for each pattern:  
-'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
-
-From this set of variables, various estimates were made, including the
-mean() and std() of various measurements.
+database come from accelerometer and gyroscope sensors.  You should
+read the description and code book files in the raw data directories
+for more details on the original measurement instruments and study
+design.
 
 For the tidy data set we extract from this raw data, we are interested
-only in the mean and standard deviation measure estimates of the
-various features.  We extract out only these measures from the
-measured features.  We then further summarize the data by grouping by
-subjects and activity type.  The original raw data contained
-measurements from 30 subjects (split into test and training data
-sets).  The 30 subjects had their activities recorded on video, and
-labeled into 6 categories:
+only in the mean and standard deviation measure estimates of the raw
+various features collected in the original data.  We extract out only
+these measures from the measured features.  We then further summarize
+the data by grouping by subjects and activity type.  The original raw
+data contained measurements from 30 subjects (split into test and
+training data sets).  The 30 subjects had their activities recorded on
+video, and labeled into 6 categories:
 
 1. WALKING
 2. WALKING_UPSTAIRS
@@ -56,7 +35,7 @@ the tidy data set given here for analysis.
    - Description: Subject id, an integer variable ranging from 1 to 30
 2. Name: activity
    - Type: Factor, Categorical
-   - Description: The 6 activity categories, WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING,
+   - Description: One of 6 activity categories, WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING,
      STANDING, LAYING
 3. (columns 3-68) Names: "tBodyAcc.mean.X", "tBodyAcc.mean.Y",
    "tBodyAcc.mean.Z", "tBodyAcc.std.X", "tBodyAcc.std.Y",
@@ -118,3 +97,54 @@ perform the following
 The analysis and tidying script may be (re)run at any time if the
 raw data is present, in order to update and regenerate the tidy
 data sets.
+
+# Data Analysis Transformations
+
+In this section, we discuss the transformations and decisions made to
+produce the final tidy data set.
+
+The run_analysis.R script contains a single function named
+extract.dataset This function does the bulk of the work in tidying the
+data, and performs basically the steps 2 through 4 described in the
+project, to extract only the mean and std measures, use descriptive
+activity names, and label the data set measures with descriptive variable
+names.  We encapsulated these steps into a functions since these exact
+same transformations needed to be done for both the test and training
+split data subsets.  So this function returns a data frame of the
+gathered data, which we then later merge together when merging the
+test and training data.
+
+Some notes about the transformations in this function.  We use
+a regular expression to search for the feature/measure names
+that have either the pattern `mean()` or `std()` in them.  There
+were 66 measurements in the raw data that appear to be means or
+standard deviations collected from sensor data.  We use the
+grep function to create a set of column indexes, called measure.indexes.
+These are the indexes of only those columns that are means or std
+measurements, that we want to extract.  In addition, we clean
+up the names of the variables in this part of the code, bu removing
+the '()' from the names.  When you assign strings to column names when
+doing a read.table, it appears that special characters like '-', '('
+and ')' are transformed to '.' in the data frame.  By removing the '()'
+before assigning the names to the columns, we made the column/feature
+variable names more readable.
+
+Besides getting the measurements of interest, this function also
+extracts out the subject id and activity label information.  These are
+in separate files, that are simply read in.  While reading in
+the activity information, we transform the activity integer labels
+into more readable category labels.  Finally, this function simply
+combines the 3 sets of data into a single data frame, and returns it.
+
+We use the function to get the needed data from the test and training
+subdata sets.  Outside of the function, we get this data and merge
+it together into one big data frame.
+
+With this merged set of 10299 observations, we then group the data by
+subject id and activity category using the 'aggregate()' method.  This
+gives us a new data frame of only 180 observations (30 subjects with 6
+activity categories for each subject).  For each group, we calculate
+the mean of each of the original measures within that group.  Thus for
+each of the 180 observations in the final tidy data set, each measure
+is a mean of the sensor measurements for all measures in the given
+subject/activity group of observations.

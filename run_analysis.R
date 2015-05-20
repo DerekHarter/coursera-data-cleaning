@@ -31,33 +31,40 @@ extract.dataset <- function(rawDataDir, subdata) {
     # Returns:
     #    A dataframe of the subject, activity and measurements data tidied
     #    up from the test/train subdirectory and feature information
-    
-    # (2) extract only the measurement features measuring mean and standard 
-    # deviation
+
+    # (4) approrpiately label the data set with descriptive variable names
+    # here we first clean up the feature names, making it easier to find the
+    # measurements we are interested in.  We leave the - in the measure
+    # variable names for now
     featureFileName <- 'features.txt'
     featureFilePath <- file.path(rawDataDir, featureFileName)
     features <- read.table(featureFilePath)
-    measure.indexes = grep("mean\\(\\)|std\\(\\)", features[,2])
+    featureNames <- tolower(features[,2]) # all variables use only lower case
+    featureNames <- sub('\\(', '', featureNames) # remove (
+    featureNames <- sub('\\)', '', featureNames) # remove )
 
-    # now actually extract only those measurements we are interested in and
-    # (4) appropriately label the data set with descriptive variable names
+    # (2) extract only the measurement features measuring mean and standard
+    # deviation
+    featureIndexes <- grep("-(mean|std)(-|$)", featureNames)
     measuresFileName <- sprintf('X_%s.txt', subdata)
     measuresFilePath <- file.path(rawDataDir, subdata, measuresFileName)
-    measures <- read.table(measuresFilePath, col.names=gsub('\\(\\)', '', features[,2]))
-    measures <- measures[measure.indexes]
+    measures <- read.table(measuresFilePath, col.names=featureNames)
+    measures <- measures[featureIndexes]
 
     # (3) use descriptive activity names to name the activities in
     # the dataset
     activityFileName <- sprintf('y_%s.txt', subdata)
     activityFilePath <- file.path(rawDataDir, subdata, activityFileName)
     a <- read.table(activityFilePath)
-    activity = factor(a[,1], labels=c('WALKING', 'WALKING_UPSTAIRS', 'WALKING_DOWNSTAIRS', 'SITTING', 'STANDING', 'LAYING'))
+    activity = factor(a[,1], labels=c('WALKING', 'WALKING_UPSTAIRS', 
+                                      'WALKING_DOWNSTAIRS', 'SITTING', 
+                                      'STANDING', 'LAYING'))
 
     # get the subject information needed for step 5
     subjectFileName <- sprintf('subject_%s.txt', subdata)
     subjectFilePath <- file.path(rawDataDir, subdata, subjectFileName)
     subjects <- read.table(subjectFilePath)
-    
+
     # build dataframe from data and return it
     result.df <- subjects
     names(result.df) <- c('subject')
@@ -65,7 +72,7 @@ extract.dataset <- function(rawDataDir, subdata) {
     result.df <- cbind(result.df, measures)
     result.df
 }
-    
+
 # we assume all the raw data is in a subdirectory with this name, structured
 # further into test and train subdirectories
 rawDataDir <- 'UCI HAR Dataset'
@@ -84,12 +91,9 @@ write.table(merged.df, 'ucihar-tidy-subject-activity-measures.txt', row.names=FA
 
 # perform step 5, create a second, independent tidy data set with the
 # averages of each variable for each activity and each subject.
-# I assume we should end up with 6 lines for each subject, with have the
+# I assume we should end up with 6 lines for each subject, which have the
 # average of all observations for each of our 66 variables for the
-# subject/activity combinations.
-tidy.df <- aggregate(x = merged.df[,3:68], 
-                     by = list(merged.df$subject, merged.df$activity), 
-                     FUN = mean)
-names(tidy.df)[1] <- 'subject'
-names(tidy.df)[2] <- 'activity' 
+# subject/activity group
+library(dplyr)
+tidy.df <- merged.df %>% group_by(subject, activity) %>% summarise_each(funs(mean))
 write.table(tidy.df, 'ucihar-tidy-subject-activity-means.txt', row.names=FALSE)

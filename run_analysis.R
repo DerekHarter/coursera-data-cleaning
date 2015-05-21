@@ -116,8 +116,8 @@ merged.df <- rbind(test.df, train.df)
 # Y, Z, or in some cases the devices don't have measurements along the 3 separate
 # axis.  First of all, we gather all the columns that are not true variables
 # into 1 column.
-tidy.df <- tidy.df <- gather(merged.df, domain_signal_method_axis, measure, 
-                             -subject, -activity)
+tidy.df <- gather(merged.df, domain_signal_method_axis, measure, 
+                  -subject, -activity)
 
 # We prepared the variables to be separated by formatting the column names
 # previously.  These names are now in the domain_signal_variable_axis column.

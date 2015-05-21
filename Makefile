@@ -1,9 +1,9 @@
 all: run_analysis
 
-run_analysis:
+run_analysis: getdata-projectfiles-UCIHARDataset.zip
 	./run_analysis.R
 
-get_data:
+getdata-projectfiles-UCIHARDataset.zip: 
 	./get_data.R
 
 clean:

@@ -16,4 +16,4 @@ vignettes/*.pdf
 UCI\ HAR\ Dataset
 *.zip
 ucihar-tidy-subject-activity-measures.txt
-ucihar-tidy-subject-activity-means.txt
+ucihar-tidy-subject-activity-summary.txt
